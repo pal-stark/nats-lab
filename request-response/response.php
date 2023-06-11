@@ -1,12 +1,10 @@
 #!/usr/bin/php
 <?php
-
 use Basis\Nats\Client;
-//use Basis\Nats\Message\Payload;
+require_once '../config.php';
 
-$configuration = require_once '../config.php';
-
-$group = $argc > 1 ? (string)$argv[1] : null;
+$options = getopt("m:t:");
+$topic = isset($options['t']) ? $options['t'] : 'test.message.rr';
 
 try {
 
@@ -16,16 +14,9 @@ try {
     } else {
         die('error to connect to nats server');
     }
-    if ($group) {
-        $client->subscribeQueue('test.message', $group, function ($message) {
-            messageHaqndler($message);
+        $client->subscribe($topic, function ($message) {
+            return messageHaqndler($message );
         });
-
-    } else {
-        $client->subscribe('test.message', function ($message) {
-            messageHaqndler($message);
-        });
-    }
     do {
         $client->process();
     } while (1);
@@ -36,5 +27,5 @@ try {
 
 function messageHaqndler($message){
     echo $message->subject, ': ', $message->body, PHP_EOL;
-    print_r($message->headers);
+    return $message->body . ': + result';
 }
