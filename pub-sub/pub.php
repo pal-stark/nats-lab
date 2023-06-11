@@ -4,7 +4,7 @@
 use Basis\Nats\Client;
 use Basis\Nats\Message\Payload;
 
-require_once '../config.php';
+$configuration = require_once '../config.php';
 
 try {
 
