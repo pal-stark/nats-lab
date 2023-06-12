@@ -1,0 +1,6 @@
+{
+    "require": {
+        "basis-company/nats": "^0.13.2",
+        "vlucas/phpdotenv": "^5.5"
+    }
+}
